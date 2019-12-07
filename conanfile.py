@@ -10,7 +10,6 @@ class ExamplePocoHttpServer(ConanFile):
     url = "https://github.com/konstantin89/example-poco-http-server"
     settings = "os", "arch", "compiler", "build_type"
     generators = "cmake"
-
     license = "MIT"
 
     def build_requirements(self):
@@ -21,11 +20,13 @@ class ExamplePocoHttpServer(ConanFile):
         cmake.configure()
         cmake.build()
 
+    def source(self):
+        self.run("git clone https://github.com/konstantin89/example-poco-http-server")
+        self.run("cd example-poco-http-server")
+
     def package(self):
         self.copy("LICENSE", dst="licenses")
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.install()
+        self.copy("src/bin/*", dst="bin")
 
     def package_info(self):
         self.cpp_info.libs = []
